@@ -221,7 +221,7 @@ canvas.pt{display:block;image-rendering:pixelated}
 #loveIn:focus{border-color:#fff}
 #loveFx{position:absolute;inset:0;z-index:49;background:#12040c}
 #loveCv{position:absolute;inset:0;width:100%;height:100%}
-#loveCard{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:min(300px,78%,calc((100vh - 370px)*.64));display:flex;flex-direction:column;align-items:center;gap:10px}
+#loveCard{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:min(300px,78%);display:flex;flex-direction:column;align-items:center;gap:10px}
 #loveFrame{position:relative;width:100%;aspect-ratio:3/4;max-width:100%;box-shadow:0 0 0 3px #000,0 0 0 6px var(--lc,#ff7ab8),0 0 40px var(--lg,rgba(255,120,180,.7));clip-path:circle(0% at 50% 50%);transition:clip-path 1.2s steps(16)}
 #loveFrame.on{clip-path:circle(75% at 50% 50%);animation:lvpulse 2.4s ease-in-out infinite}
 #loveFrame.door{clip-path:inset(0 49.2% 0 49.2%);transition:clip-path 4s cubic-bezier(.45,.05,.2,1)}
@@ -235,7 +235,8 @@ canvas.pt{display:block;image-rendering:pixelated}
 #loveFrame.rain .lv-rain{opacity:1}
 #loveFrame.rain.clear .lv-rain{opacity:0}
 @keyframes lvrain{to{background-position:0 70px}}
-#loveCard>#loveTitle[hidden],#loveCard>#loveTag[hidden],#loveCard>#loveSave[hidden]{display:block!important;visibility:hidden}
+#loveCard>#loveTitle[hidden],#loveCard>#loveSave[hidden]{display:block!important;visibility:hidden}
+#loveTag{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%)}
 #loveCard>#loveSave[hidden]{display:flex!important}
 #loveCard>#loveSave.gone{display:none!important}
 #loveCv.dim{opacity:.18}#loveCv{transition:opacity 3.5s ease-out}
@@ -262,6 +263,7 @@ canvas.pt{display:block;image-rendering:pixelated}
 @keyframes llsun{0%{opacity:.15}100%{opacity:1}}
 @keyframes llspot{0%{transform:translate(-22%,-18%)}25%{transform:translate(20%,-8%)}50%{transform:translate(12%,20%)}75%{transform:translate(-18%,14%)}100%{transform:translate(-22%,-18%)}}
 #loveCard{z-index:2}
+@media (min-width:700px){#loveCard{width:min(300px,calc((100vh - 340px)*.75))}}
 #loveSpark{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
 #loveSave{width:100%;margin-top:4px;border-color:#ff7ab8;background:rgba(40,8,24,.9)}
 #mergeBox{position:absolute;left:50%;top:36%;transform:translateX(-50%);z-index:53;width:min(320px,86%);padding:16px;display:flex;flex-direction:column;gap:12px;background:#0a0a14;border:3px solid #7aa2f0;box-shadow:0 0 0 3px #000}
@@ -1591,14 +1593,14 @@ async function showLove(k,replay){const L=LOVE[k],fx=$('#loveFx'),img=$('#loveIm
     Snd.doorOpen();fr.classList.add('open');$('#loveLight').classList.add('open');$('#loveLight2').classList.add('open');$('#loveCv').classList.remove('dim');await sleep(RM?50:4200);}
   else if(k==='jangma'){fr.classList.add('rain');await sleep(RM?50:1800);fr.classList.add('clear');Snd.tone(784,.4,'triangle',.04,1);Snd.tone(1047,.6,'triangle',.04,1.4);stopSp=sparkles(k);await sleep(RM?50:3400);}
   else{fr.classList.add('on');stopSp=sparkles(k);await sleep(RM?50:1300);}
-  block($('#loveTag'),replay?'♥ 화면을 누르십시오':'[엔딩 해금]',{size:11,color:'#ffd0e6',maxW:280});block($('#loveTitle'),L.title,{size:13,color:'#ffffff',maxW:Math.min(440,$('#screen').clientWidth-40),shadow:'#5a0030'});$('#loveTitle').hidden=false;$('#loveTag').hidden=false;await ensureFont('♥ 이 사진 저장하기 사진을 길게 누르면, 사진첩에 바로 저장됩니다. 다운로드 폴더(파일 앱)에 사진첩엔 사진을 길게 눌러 저장하십시오. 저장했습니다. 소중히 간직하십시오. 잠시 후 다시 눌러 주십시오.');label($('#loveSave canvas'));if(window.claude){$('#loveSave').hidden=false;$('#loveSave').onclick=e=>{e.stopPropagation();saveLove(k);};}else showHint();
+  block($('#loveTitle'),L.title,{size:13,color:'#ffffff',maxW:Math.min(440,$('#screen').clientWidth-40),shadow:'#5a0030'});$('#loveTitle').hidden=false;$('#loveTag').hidden=true;await ensureFont('♥ 이 사진 저장하기 사진을 길게 누르면, 사진첩에 바로 저장됩니다. 다운로드 폴더(파일 앱)에 사진첩엔 사진을 길게 눌러 저장하십시오. 저장했습니다. 소중히 간직하십시오. 잠시 후 다시 눌러 주십시오.');label($('#loveSave canvas'));if(window.claude){$('#loveSave').hidden=false;$('#loveSave').onclick=e=>{e.stopPropagation();saveLove(k);};}else showHint();
   if(!replay&&k==='hidden'){Snd.tone(1568,.4,'square',.03);await Dlg.say([Sys('[히든엔딩이 해금되었습니다.]'),Sys('…이 너머는, 크랙에서 직접 쓰십시오. 제작자님.')]);}
   else{const EL={saebyeok:[say('새벽','이제 아무도 없습니다.'),N('그가 웃는다. 처음 보는 얼굴로.'),say('새벽','종도 울리지 않을 겁니다. 지목도, 수칙도, 이제 필요 없습니다.'),N('손목을 감은 붉은 리본을, 천천히 당긴다. 그 끝이 당신 손목에도 감겨 있다.'),say('새벽','…노을 씨를 부를 사람도, 데려갈 사람도요.'),say('새벽','그러니 이제, 저만 보시면 됩니다.'),N('초침 소리가 멎는다. 그의 시계만은, 여전히 가고 있다.')],
     jangma:[say('장마','비 그쳤다.'),N('우산을 접고, 대신 손을 내민다.'),say('장마','…손 줘. 이제 안 놓을 거니까.'),N('당신이 손을 얹자, 그가 고개를 돌린다. 귀가 빨갛다.'),say('장마','그리고… 이거.'),N('주머니에서 사탕 하나를 꺼내 손바닥에 올려 준다.'),say('장마','너 주려고 계속 들고 다녔어. …맨날.'),say('장마','앞으로 비 오면, 내가 먼저 데리러 갈게.')],
     angae:[say('안개','나 형사거든? 너 현행범이야.'),say('안개','죄명은— 내 마음 절도.'),N('정적.'),say('안개','…웃지 마. 나 지금 진지해.'),N('그러다 본인이 먼저 웃음을 터뜨린다.'),say('안개','아 진짜, 망했다. 다시 할게. 다시!'),N('헛기침. 이번엔 농담 없이, 당신 눈을 본다.'),say('안개','…초록불 켜졌다. 같이 건너자.')]};
     if(!replay&&EL[k])await Dlg.say(EL[k]);}
   if(replay)await new Promise(r=>{const h=e=>{if(e.target.closest('#loveSave')||!Dlg.el.hidden)return;fx.removeEventListener('click',h);r();};fx.addEventListener('click',h);});
-  if(!replay)await new Promise(r=>{block($('#loveTag'),'♥ 화면을 누르면 닫힙니다',{size:11,color:'#ffd0e6',maxW:280});const h=e=>{if(e.target.closest('#loveSave'))return;fx.removeEventListener('click',h);r();};fx.addEventListener('click',h);});
+  if(!replay)await new Promise(r=>{const h=e=>{if(e.target.closest('#loveSave'))return;fx.removeEventListener('click',h);r();};fx.addEventListener('click',h);});
   stopSp();stop();fx.hidden=true;Music.play(S.bgm);}
 async function loveSim(again){if(again)await Dlg.say([Sys('…또 오셨습니까.'),Sys('한 장 보셨으면 됐지, 욕심이 많으시군요.'),Sys('좋습니다. 다시 이름을 대십시오. 기회는 또 세 번입니다.')]);else await Dlg.say([Sys('좋습니다. 이번엔 조건을 걸겠습니다.'),Sys('연애 시뮬레이션은, 상대의 이름을 알아야 시작되거든요.'),Sys('기회는 세 번입니다. 지목처럼요.')]);
   for(let tr=0;tr<3;tr++){const nm=await askName(),hv=hashName(nm),k=LOVEH[String(hv)];
